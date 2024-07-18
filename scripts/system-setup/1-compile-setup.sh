@@ -16,7 +16,7 @@ fi
 
 if [ ! -d "$LINUXTOOLBOXDIR/linux-setup" ]; then
     echo "${YELLOW}Cloning linux-setup repository into: $LINUXTOOLBOXDIR/linux-setup${RC}"
-    git clone https://github.com/ChrisTitusTech/linux-setup "$LINUXTOOLBOXDIR/linux-setup"
+    git clone https://github.com/ChrisTitusTech/linutil "$LINUXTOOLBOXDIR/linux-setup"
     if [ $? -eq 0 ]; then
         echo "${GREEN}Successfully cloned linux-setup repository${RC}"
     else
