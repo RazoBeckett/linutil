@@ -7,6 +7,7 @@ import (
 	"log"
 	"os/exec"
 	"strings"
+	"time"
 
 	"github.com/christitustech/linutil/cmd/ui"
 
@@ -49,7 +50,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch msg.String() {
-		case "ctrl+c":
+		case "ctrl+c", "q":
 			if m.executing {
 				m.cancel()
 				m.executing = false
@@ -149,6 +150,7 @@ func (m model) executeScript(command string) tea.Cmd {
 			return executionState{err: err, stderr: stderr.String()}
 		}
 
+		m.success = true
 		return executionState{nil, ""}
 	}
 }
@@ -158,7 +160,7 @@ type returnToMenuMsg struct{}
 func (m model) delayReturnToMenu() tea.Cmd {
 	// use waitfor to show delay  below message
 	return func() tea.Msg {
-		// time.Sleep(1 * time.Second)
+		time.Sleep(2 * time.Second)
 		return returnToMenuMsg{}
 	}
 }
@@ -174,7 +176,6 @@ func main() {
 		script{name: " Alacritty Setup", description: "Titus's Alacritty configuration", command: loadScript("scripts/dotfiles/alacritty-setup.sh")},
 		script{name: " Kitty Setup", description: "Titus's kitty configuration", command: loadScript("scripts/dotfiles/kitty-setup.sh")},
 		script{name: " Rofi Setup", description: "Titus's Rofi configuration", command: loadScript("scripts/dotfiles/rofi-setup.sh")},
-		script{name: "test cancel", description: "check cancel", command: "sleep 3 && pip install shit"},
 	}
 
 	s := spinner.New()
